@@ -115,6 +115,8 @@ class ApiService {
       'clientAddress': clientData['clientAddress'] ?? '',
       'clientCity': clientData['clientCity'] ?? 'Santa Cruz',
       'clientCiNit': clientData['clientCiNit'] ?? '',
+      'latitude': clientData['latitude'],
+      'longitude': clientData['longitude'],
       'notes': clientData['notes'] ?? '',
       'items': items.map((it) => {
         'productId': it.product.id,

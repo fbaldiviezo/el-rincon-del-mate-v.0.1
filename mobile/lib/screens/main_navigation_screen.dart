@@ -43,25 +43,25 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       // ZONA DEL PULGAR (Regla UX 2): Barra inferior táctil accesible
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
-          color: AppTheme.surfaceCard,
+          color: AppTheme.surface,
           border: Border(top: BorderSide(color: AppTheme.surfaceBorder, width: 1)),
         ),
         child: NavigationBarTheme(
           data: NavigationBarThemeData(
-            backgroundColor: AppTheme.surfaceCard,
-            indicatorColor: AppTheme.woodPrimary.withValues(alpha: 0.25),
+            backgroundColor: AppTheme.surface,
+            indicatorColor: AppTheme.pastelSage,
             labelTextStyle: WidgetStateProperty.resolveWith((states) {
               final isSelected = states.contains(WidgetState.selected);
               return TextStyle(
                 fontSize: 11,
                 fontWeight: isSelected ? FontWeight.w900 : FontWeight.w600,
-                color: isSelected ? AppTheme.woodLight : AppTheme.textMuted,
+                color: isSelected ? AppTheme.woodDark : AppTheme.textMuted,
               );
             }),
             iconTheme: WidgetStateProperty.resolveWith((states) {
               final isSelected = states.contains(WidgetState.selected);
               return IconThemeData(
-                color: isSelected ? AppTheme.woodLight : AppTheme.textMuted,
+                color: isSelected ? AppTheme.woodPrimary : AppTheme.textMuted,
                 size: 22,
               );
             }),
@@ -73,17 +73,17 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             destinations: [
               const NavigationDestination(
                 icon: Icon(LucideIcons.home),
-                selectedIcon: Icon(LucideIcons.home, color: AppTheme.woodLight),
+                selectedIcon: Icon(LucideIcons.home, color: AppTheme.woodPrimary),
                 label: 'Inicio',
               ),
               const NavigationDestination(
                 icon: Icon(LucideIcons.shoppingBag),
-                selectedIcon: Icon(LucideIcons.shoppingBag, color: AppTheme.woodLight),
+                selectedIcon: Icon(LucideIcons.shoppingBag, color: AppTheme.woodPrimary),
                 label: 'Catálogo',
               ),
               const NavigationDestination(
                 icon: Icon(LucideIcons.layers),
-                selectedIcon: Icon(LucideIcons.layers, color: AppTheme.woodLight),
+                selectedIcon: Icon(LucideIcons.layers, color: AppTheme.woodPrimary),
                 label: 'Categorías',
               ),
               NavigationDestination(
@@ -99,7 +99,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   backgroundColor: AppTheme.woodPrimary,
                   textColor: Colors.white,
                   label: Text('${cart.totalItems}'),
-                  child: const Icon(LucideIcons.shoppingCart, color: AppTheme.woodLight),
+                  child: const Icon(LucideIcons.shoppingCart, color: AppTheme.woodPrimary),
                 ),
                 label: 'Carrito',
               ),

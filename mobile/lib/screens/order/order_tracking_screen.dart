@@ -174,7 +174,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                                       const Text(
                                         'CONFIRMACIÓN DE ORDEN',
                                         style: TextStyle(
-                                          color: AppTheme.woodLight,
+                                          color: AppTheme.woodPrimary,
                                           fontSize: 10,
                                           fontWeight: FontWeight.w800,
                                           letterSpacing: 0.8,
@@ -196,10 +196,10 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                                     decoration: BoxDecoration(
                                       color: isApproved
-                                          ? AppTheme.success.withValues(alpha: 0.15)
+                                          ? AppTheme.successSoft
                                           : isRejected
-                                              ? AppTheme.danger.withValues(alpha: 0.15)
-                                              : AppTheme.warning.withValues(alpha: 0.15),
+                                              ? AppTheme.dangerSoft
+                                              : AppTheme.warningSoft,
                                       borderRadius: BorderRadius.circular(12),
                                       border: Border.all(
                                         color: isApproved
@@ -363,7 +363,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                                   Helpers.formatCurrency(item.subtotal),
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w800,
-                                    color: AppTheme.woodLight,
+                                    color: AppTheme.woodPrimary,
                                     fontSize: 13,
                                   ),
                                 ),
@@ -392,7 +392,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                               const SizedBox(height: 8),
                               Row(
                                 children: [
-                                  const Icon(LucideIcons.mapPin, size: 16, color: AppTheme.woodLight),
+                                  const Icon(LucideIcons.mapPin, size: 16, color: AppTheme.woodPrimary),
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: Text(
@@ -405,7 +405,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                               const SizedBox(height: 6),
                               Row(
                                 children: [
-                                  const Icon(LucideIcons.phone, size: 16, color: AppTheme.woodLight),
+                                  const Icon(LucideIcons.phone, size: 16, color: AppTheme.woodPrimary),
                                   const SizedBox(width: 8),
                                   Text(
                                     order.phone,
@@ -451,7 +451,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                                   const Text('Total:', style: TextStyle(color: AppTheme.textLight, fontWeight: FontWeight.w900, fontSize: 16)),
                                   Text(
                                     Helpers.formatCurrency(order.total),
-                                    style: const TextStyle(color: AppTheme.woodLight, fontWeight: FontWeight.w900, fontSize: 20),
+                                    style: const TextStyle(color: AppTheme.woodPrimary, fontWeight: FontWeight.w900, fontSize: 20),
                                   ),
                                 ],
                               ),

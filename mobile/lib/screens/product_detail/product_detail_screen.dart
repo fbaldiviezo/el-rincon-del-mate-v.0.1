@@ -101,7 +101,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           height: 300,
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            color: AppTheme.surface,
+                            color: AppTheme.pastelCream,
                             borderRadius: BorderRadius.circular(24),
                             border: Border.all(color: AppTheme.surfaceBorder),
                           ),
@@ -114,7 +114,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   ApiConfig.resolveImageUrl(images[_selectedImageIndex]),
                                   fit: BoxFit.contain,
                                   errorBuilder: (_, _, _) => const Center(
-                                    child: Icon(LucideIcons.package, color: AppTheme.woodLight, size: 64),
+                                    child: Icon(LucideIcons.package, color: AppTheme.woodPrimary, size: 64),
                                   ),
                                 ),
                               ),
@@ -124,8 +124,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   left: 12,
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: AppTheme.surfaceCard.withValues(alpha: 0.85),
+                                      color: AppTheme.surface.withValues(alpha: 0.9),
                                       shape: BoxShape.circle,
+                                      border: Border.all(color: AppTheme.surfaceBorder),
                                     ),
                                     child: IconButton(
                                       icon: const Icon(LucideIcons.chevronLeft, color: AppTheme.textLight),
@@ -144,8 +145,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   right: 12,
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: AppTheme.surfaceCard.withValues(alpha: 0.85),
+                                      color: AppTheme.surface.withValues(alpha: 0.9),
                                       shape: BoxShape.circle,
+                                      border: Border.all(color: AppTheme.surfaceBorder),
                                     ),
                                     child: IconButton(
                                       icon: const Icon(LucideIcons.chevronRight, color: AppTheme.textLight),
@@ -166,12 +168,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                                     decoration: BoxDecoration(
-                                      color: AppTheme.danger.withValues(alpha: 0.9),
+                                      color: AppTheme.dangerSoft,
                                       borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(color: AppTheme.danger.withValues(alpha: 0.5)),
                                     ),
                                     child: const Text(
                                       'Agotado',
-                                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 12),
+                                      style: TextStyle(color: AppTheme.danger, fontWeight: FontWeight.w800, fontSize: 12),
                                     ),
                                   ),
                                 ),
@@ -183,12 +186,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                                     decoration: BoxDecoration(
-                                      color: Colors.black.withValues(alpha: 0.7),
+                                      color: Colors.white.withValues(alpha: 0.9),
                                       borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(color: AppTheme.surfaceBorder),
                                     ),
                                     child: Text(
                                       '${_selectedImageIndex + 1} / ${images.length}',
-                                      style: const TextStyle(color: AppTheme.textMuted, fontSize: 11, fontWeight: FontWeight.bold),
+                                      style: const TextStyle(color: AppTheme.textLight, fontSize: 11, fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ),
@@ -214,10 +218,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     height: 64,
                                     padding: const EdgeInsets.all(6),
                                     decoration: BoxDecoration(
-                                      color: AppTheme.surface,
+                                      color: AppTheme.pastelCream,
                                       borderRadius: BorderRadius.circular(14),
                                       border: Border.all(
-                                        color: isSelected ? AppTheme.woodLight : AppTheme.surfaceBorder,
+                                        color: isSelected ? AppTheme.woodPrimary : AppTheme.surfaceBorder,
                                         width: isSelected ? 2 : 1,
                                       ),
                                     ),
@@ -240,14 +244,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                             decoration: BoxDecoration(
-                              color: AppTheme.woodPrimary.withValues(alpha: 0.15),
+                              color: AppTheme.pastelSage,
                               borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: AppTheme.woodPrimary.withValues(alpha: 0.3)),
+                              border: Border.all(color: AppTheme.woodLight.withValues(alpha: 0.3)),
                             ),
                             child: Text(
                               widget.product.category!.name.toUpperCase(),
                               style: const TextStyle(
-                                color: AppTheme.woodLight,
+                                color: AppTheme.woodDark,
                                 fontSize: 11,
                                 fontWeight: FontWeight.w800,
                                 letterSpacing: 0.8,
@@ -278,14 +282,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               style: const TextStyle(
                                 fontSize: 26,
                                 fontWeight: FontWeight.w900,
-                                color: AppTheme.woodLight,
+                                color: AppTheme.woodPrimary,
                               ),
                             ),
                             const SizedBox(width: 14),
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                               decoration: BoxDecoration(
-                                color: isAvailable ? AppTheme.success.withValues(alpha: 0.15) : AppTheme.danger.withValues(alpha: 0.15),
+                                color: isAvailable ? AppTheme.successSoft : AppTheme.dangerSoft,
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
                                   color: isAvailable ? AppTheme.success.withValues(alpha: 0.3) : AppTheme.danger.withValues(alpha: 0.3),
@@ -361,7 +365,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 child: Row(
                                   children: [
                                     IconButton(
-                                      icon: const Icon(LucideIcons.minus, size: 16, color: AppTheme.woodLight),
+                                      icon: const Icon(LucideIcons.minus, size: 16, color: AppTheme.woodPrimary),
                                       constraints: const BoxConstraints(minWidth: 48, minHeight: 48), // Regla UX 3
                                       onPressed: _quantity > 1 ? () => setState(() => _quantity--) : null,
                                     ),
@@ -378,7 +382,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                       ),
                                     ),
                                     IconButton(
-                                      icon: const Icon(LucideIcons.plus, size: 16, color: AppTheme.woodLight),
+                                      icon: const Icon(LucideIcons.plus, size: 16, color: AppTheme.woodPrimary),
                                       constraints: const BoxConstraints(minWidth: 48, minHeight: 48), // Regla UX 3
                                       onPressed: _quantity < widget.product.stock ? () => setState(() => _quantity++) : null,
                                     ),

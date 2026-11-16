@@ -187,14 +187,14 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: const [
-            Icon(LucideIcons.coffee, color: AppTheme.woodLight, size: 20),
+            Icon(LucideIcons.coffee, color: AppTheme.woodPrimary, size: 20),
             SizedBox(width: 8),
             Text('EL RINCÓN DEL MATE'),
           ],
         ),
         actions: [
           IconButton(
-            icon: const Icon(LucideIcons.phoneCall),
+            icon: const Icon(LucideIcons.phoneCall, color: AppTheme.woodPrimary),
             tooltip: 'Sucursales WhatsApp',
             constraints: const BoxConstraints(minWidth: 48, minHeight: 48), // Regla UX 3
             onPressed: () => _showSucursalesSheet(context),
@@ -346,7 +346,7 @@ class _HomeScreenState extends State<HomeScreen> {
       height: 260,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceCard,
+        color: AppTheme.surface,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: AppTheme.surfaceBorder),
       ),
@@ -372,13 +372,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                             decoration: BoxDecoration(
-                              color: AppTheme.woodPrimary.withValues(alpha: 0.15),
+                              color: AppTheme.pastelSage,
                               borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: AppTheme.woodLight.withValues(alpha: 0.3)),
                             ),
                             child: Text(
                               slide['badge']!,
                               style: const TextStyle(
-                                color: AppTheme.woodLight,
+                                color: AppTheme.woodDark,
                                 fontSize: 10,
                                 fontWeight: FontWeight.w800,
                                 letterSpacing: 0.6,
@@ -410,14 +411,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
 
-                    // Imagen a la derecha
+                    // Imagen a la derecha sobre fondo pastel suave
                     Expanded(
                       flex: 4,
                       child: Center(
-                        child: Image.network(
-                          ApiConfig.resolveImageUrl(slide['image']),
-                          fit: BoxFit.contain,
-                          errorBuilder: (_, _, _) => const Icon(LucideIcons.package, size: 54, color: AppTheme.woodLight),
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: AppTheme.pastelCream,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Image.network(
+                            ApiConfig.resolveImageUrl(slide['image']),
+                            fit: BoxFit.contain,
+                            errorBuilder: (_, _, _) => const Icon(LucideIcons.package, size: 54, color: AppTheme.woodPrimary),
+                          ),
                         ),
                       ),
                     ),
@@ -444,7 +452,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: isActive ? 22 : 8,
                       height: 8,
                       decoration: BoxDecoration(
-                        color: isActive ? AppTheme.woodLight : AppTheme.surfaceBorder,
+                        color: isActive ? AppTheme.woodPrimary : AppTheme.surfaceBorder,
                         borderRadius: BorderRadius.circular(4),
                       ),
                     );
@@ -505,12 +513,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       Container(
                         padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
-                          color: AppTheme.surface,
+                          color: AppTheme.pastelSage,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: const Icon(LucideIcons.layers, size: 16, color: AppTheme.woodLight),
+                        child: const Icon(LucideIcons.layers, size: 16, color: AppTheme.woodPrimary),
                       ),
-                      const Icon(LucideIcons.arrowRight, size: 14, color: AppTheme.woodLight),
+                      const Icon(LucideIcons.arrowRight, size: 14, color: AppTheme.woodPrimary),
                     ],
                   ),
                   Column(
@@ -586,14 +594,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         Container(
                           width: double.infinity,
                           decoration: const BoxDecoration(
-                            color: AppTheme.surface,
+                            color: AppTheme.pastelCream,
                             borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
                           ),
                           padding: const EdgeInsets.all(12),
                           child: Image.network(
                             ApiConfig.resolveImageUrl(product.imageUrl),
                             fit: BoxFit.contain,
-                            errorBuilder: (_, _, _) => const Icon(LucideIcons.package, color: AppTheme.woodLight, size: 36),
+                            errorBuilder: (_, _, _) => const Icon(LucideIcons.package, color: AppTheme.woodPrimary, size: 36),
                           ),
                         ),
                         Positioned(
@@ -602,13 +610,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
-                              color: Colors.black.withValues(alpha: 0.75),
+                              color: AppTheme.pastelSage,
                               borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: AppTheme.woodLight.withValues(alpha: 0.3)),
                             ),
                             child: Text(
                               Helpers.formatCurrency(product.price),
                               style: const TextStyle(
-                                color: AppTheme.woodLight,
+                                color: AppTheme.woodDark,
                                 fontWeight: FontWeight.w900,
                                 fontSize: 11,
                               ),
@@ -727,10 +736,10 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: AppTheme.woodPrimary.withValues(alpha: 0.15),
+              color: AppTheme.pastelSage,
               borderRadius: BorderRadius.circular(14),
             ),
-            child: Icon(icon, color: AppTheme.woodLight, size: 22),
+            child: Icon(icon, color: AppTheme.woodPrimary, size: 22),
           ),
           const SizedBox(width: 16),
           Expanded(

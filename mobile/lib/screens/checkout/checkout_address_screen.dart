@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../core/theme/app_theme.dart';
+import '../../services/location_service.dart';
+import 'address_picker_screen.dart';
 import 'checkout_payment_screen.dart';
 
 class CheckoutAddressScreen extends StatefulWidget {
@@ -33,11 +36,15 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
   final TextEditingController _emailCtrl = TextEditingController();
   final TextEditingController _phoneCtrl = TextEditingController();
   final TextEditingController _ciNitCtrl = TextEditingController();
-  final TextEditingController _cityCtrl = TextEditingController();
-  final TextEditingController _addressCtrl = TextEditingController();
   final TextEditingController _notesCtrl = TextEditingController();
 
+  // Datos seleccionados del Picker de Dirección
   String _selectedDepartment = 'Tarija';
+  String _pickedAddress = '';
+  String _pickedCity = 'Tarija';
+  double? _pickedLatitude;
+  double? _pickedLongitude;
+  bool _isLocatingGps = false;
 
   @override
   void dispose() {
@@ -47,13 +54,96 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
     _emailCtrl.dispose();
     _phoneCtrl.dispose();
     _ciNitCtrl.dispose();
-    _cityCtrl.dispose();
-    _addressCtrl.dispose();
     _notesCtrl.dispose();
     super.dispose();
   }
 
+  // Abre el Picker Interactivo de Ubicación
+  Future<void> _openAddressPicker() async {
+    final result = await Navigator.of(context).push<Map<String, dynamic>>(
+      MaterialPageRoute(
+        builder: (_) => AddressPickerScreen(
+          initialPosition: (_pickedLatitude != null && _pickedLongitude != null)
+              ? LatLng(_pickedLatitude!, _pickedLongitude!)
+              : null,
+          initialStreet: _pickedAddress,
+        ),
+      ),
+    );
+
+    if (result != null && mounted) {
+      setState(() {
+        _pickedAddress = result['address'] ?? '';
+        _pickedCity = result['city'] ?? 'Tarija';
+        _pickedLatitude = result['latitude'];
+        _pickedLongitude = result['longitude'];
+
+        // Sincronizar departamento si coincide con alguno de Bolivia
+        final state = (result['department'] as String? ?? '').trim();
+        for (final dept in _departments) {
+          if (state.toLowerCase().contains(dept.toLowerCase())) {
+            _selectedDepartment = dept;
+            break;
+          }
+        }
+      });
+    }
+  }
+
+  // Detección directa por GPS del dispositivo
+  Future<void> _quickGpsDetect() async {
+    setState(() => _isLocatingGps = true);
+    final pos = await LocationService.getCurrentDeviceLocation();
+    if (!mounted) return;
+
+    if (pos != null) {
+      final coords = LatLng(pos.latitude, pos.longitude);
+      final details = await LocationService.reverseGeocode(coords);
+      if (!mounted) return;
+
+      setState(() {
+        _pickedLatitude = pos.latitude;
+        _pickedLongitude = pos.longitude;
+        _pickedAddress = details.formattedAddress;
+        _pickedCity = details.city;
+
+        for (final dept in _departments) {
+          if (details.department.toLowerCase().contains(dept.toLowerCase())) {
+            _selectedDepartment = dept;
+            break;
+          }
+        }
+        _isLocatingGps = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Ubicación GPS detectada: ${details.formattedAddress}'),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    } else {
+      setState(() => _isLocatingGps = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No se pudo acceder al GPS. Abre el mapa para seleccionar tu punto.'),
+          duration: Duration(seconds: 3),
+        ),
+      );
+    }
+  }
+
   void _proceedToPayment() {
+    if (_pickedAddress.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Por favor selecciona tu dirección en el mapa antes de continuar.'),
+          backgroundColor: AppTheme.danger,
+        ),
+      );
+      return;
+    }
+
     if (_formKey.currentState?.validate() ?? false) {
       final fullName = [
         _firstNameCtrl.text.trim(),
@@ -61,9 +151,9 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
         _lastNameMaternoCtrl.text.trim(),
       ].where((part) => part.isNotEmpty).join(' ');
 
-      final formattedCity = _selectedDepartment == _cityCtrl.text.trim()
-          ? _cityCtrl.text.trim()
-          : '${_cityCtrl.text.trim()}, $_selectedDepartment';
+      final formattedCity = _selectedDepartment == _pickedCity.trim()
+          ? _pickedCity.trim()
+          : '${_pickedCity.trim()}, $_selectedDepartment';
 
       final clientData = {
         'clientName': fullName,
@@ -72,7 +162,9 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
         'clientCiNit': _ciNitCtrl.text.trim(),
         'clientDepartment': _selectedDepartment,
         'clientCity': formattedCity,
-        'clientAddress': _addressCtrl.text.trim(),
+        'clientAddress': _pickedAddress,
+        'latitude': _pickedLatitude,
+        'longitude': _pickedLongitude,
         'notes': _notesCtrl.text.trim(),
       };
 
@@ -103,26 +195,34 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
               children: [
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                     child: Form(
                       key: _formKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Stepper
+                          // Stepper Minimalista
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              _buildStepBadge(number: '1', label: 'Datos', isActive: true),
-                              Container(width: 40, height: 2, color: AppTheme.surfaceBorder),
+                              _buildStepBadge(number: '1', label: 'Envío', isActive: true),
+                              Container(width: 36, height: 2, color: AppTheme.surfaceBorder),
                               _buildStepBadge(number: '2', label: 'Pago QR', isActive: false),
                             ],
                           ),
 
                           const SizedBox(height: 24),
 
-                          // SECCIÓN 1: DATOS PERSONALES
-                          _buildSectionHeader(LucideIcons.user, 'Información Personal'),
+                          // SECCIÓN: PICKER DE DIRECCIÓN Y GPS
+                          _buildSectionHeader(LucideIcons.mapPin, 'Ubicación de Entrega'),
+                          const SizedBox(height: 10),
+
+                          _buildAddressPickerCard(),
+
+                          const SizedBox(height: 24),
+
+                          // SECCIÓN 2: INFORMACIÓN PERSONAL
+                          _buildSectionHeader(LucideIcons.user, 'Información del Cliente'),
                           const SizedBox(height: 12),
                           TextFormField(
                             controller: _firstNameCtrl,
@@ -151,8 +251,8 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
 
                           const SizedBox(height: 24),
 
-                          // SECCIÓN 2: CONTACTO E IDENTIFICACIÓN
-                          _buildSectionHeader(LucideIcons.phone, 'Contacto e Identificación'),
+                          // SECCIÓN 3: CONTACTO E IDENTIFICACIÓN
+                          _buildSectionHeader(LucideIcons.phone, 'Contacto y Comprobante'),
                           const SizedBox(height: 12),
                           TextFormField(
                             controller: _emailCtrl,
@@ -202,12 +302,12 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
 
                           const SizedBox(height: 24),
 
-                          // SECCIÓN 3: LUGAR DE ENTREGA
-                          _buildSectionHeader(LucideIcons.mapPin, 'Lugar de Entrega (Bolivia)'),
+                          // SECCIÓN 4: DEPARTAMENTO Y NOTAS
+                          _buildSectionHeader(LucideIcons.map, 'Departamento y Destino'),
                           const SizedBox(height: 12),
                           DropdownButtonFormField<String>(
                             initialValue: _selectedDepartment,
-                            dropdownColor: AppTheme.surfaceCard,
+                            dropdownColor: AppTheme.surface,
                             decoration: const InputDecoration(labelText: 'Departamento *'),
                             items: _departments.map((dept) {
                               return DropdownMenuItem(
@@ -219,34 +319,15 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
                               if (val != null) setState(() => _selectedDepartment = val);
                             },
                           ),
-                          const SizedBox(height: 12),
-                          TextFormField(
-                            controller: _cityCtrl,
-                            decoration: const InputDecoration(
-                              labelText: 'Ciudad / Localidad *',
-                              hintText: 'Ej. Tarija, Cercado / El Alto / Cochabamba',
-                            ),
-                            validator: (val) => val == null || val.trim().isEmpty ? 'Ingresa la ciudad o localidad' : null,
-                          ),
-                          const SizedBox(height: 12),
-                          TextFormField(
-                            controller: _addressCtrl,
-                            decoration: const InputDecoration(
-                              labelText: 'Dirección Exacta de Entrega *',
-                              hintText: 'Calle, número, barrio o referencia',
-                            ),
-                            validator: (val) => val == null || val.trim().isEmpty ? 'Ingresa la dirección detallada' : null,
-                          ),
 
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 16),
 
-                          // SECCIÓN 4: NOTAS
                           TextFormField(
                             controller: _notesCtrl,
                             maxLines: 2,
                             decoration: const InputDecoration(
                               labelText: 'Indicaciones Especiales (Opcional)',
-                              hintText: 'Ej. Entregar en horario de la tarde / Llamar antes...',
+                              hintText: 'Ej. Timbre azul / Entregar en horario de la tarde...',
                             ),
                           ),
                           const SizedBox(height: 20),
@@ -260,7 +341,7 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: const BoxDecoration(
-                    color: AppTheme.surfaceCard,
+                    color: AppTheme.surface,
                     border: Border(top: BorderSide(color: AppTheme.surfaceBorder)),
                   ),
                   child: ElevatedButton.icon(
@@ -280,10 +361,128 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
     );
   }
 
+  Widget _buildAddressPickerCard() {
+    final hasAddress = _pickedAddress.isNotEmpty;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: hasAddress ? AppTheme.pastelSage : AppTheme.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: hasAddress ? AppTheme.woodLight.withValues(alpha: 0.4) : AppTheme.surfaceBorder,
+          width: 1.5,
+        ),
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: hasAddress ? AppTheme.woodPrimary : AppTheme.pastelCream,
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Icon(
+                  hasAddress ? LucideIcons.mapPin : LucideIcons.compass,
+                  color: hasAddress ? Colors.white : AppTheme.woodPrimary,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      hasAddress ? 'Punto de Entrega Confirmado' : 'Selecciona tu Punto en el Mapa',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w800,
+                        color: hasAddress ? AppTheme.woodDark : AppTheme.textLight,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      hasAddress
+                          ? _pickedAddress
+                          : 'Usa el mapa interactivo o tu GPS para fijar el lugar exacto de entrega.',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: hasAddress ? AppTheme.textLight : AppTheme.textMuted,
+                        height: 1.3,
+                      ),
+                    ),
+                    if (hasAddress && _pickedLatitude != null && _pickedLongitude != null) ...[
+                      const SizedBox(height: 6),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: AppTheme.surfaceBorder),
+                        ),
+                        child: Text(
+                          'GPS: ${_pickedLatitude!.toStringAsFixed(4)}, ${_pickedLongitude!.toStringAsFixed(4)}',
+                          style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: AppTheme.textMuted),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              // Botón Abrir Mapa
+              Expanded(
+                child: OutlinedButton.icon(
+                  icon: const Icon(LucideIcons.map, size: 16),
+                  label: Text(hasAddress ? 'Cambiar en Mapa' : 'Abrir Mapa'),
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 48), // Regla UX 3
+                    backgroundColor: Colors.white,
+                    side: BorderSide(color: hasAddress ? AppTheme.woodPrimary : AppTheme.surfaceBorder),
+                  ),
+                  onPressed: _openAddressPicker,
+                ),
+              ),
+              const SizedBox(width: 10),
+              // Botón rápido GPS
+              IconButton.filledTonal(
+                icon: _isLocatingGps
+                    ? const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.woodPrimary),
+                      )
+                    : const Icon(LucideIcons.locateFixed, size: 20),
+                tooltip: 'Usar mi GPS actual',
+                style: IconButton.styleFrom(
+                  minimumSize: const Size(48, 48), // Regla UX 3
+                  backgroundColor: AppTheme.pastelCream,
+                  foregroundColor: AppTheme.woodPrimary,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                ),
+                onPressed: _isLocatingGps ? null : _quickGpsDetect,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildSectionHeader(IconData icon, String title) {
     return Row(
       children: [
-        Icon(icon, size: 18, color: AppTheme.woodLight),
+        Icon(icon, size: 18, color: AppTheme.woodPrimary),
         const SizedBox(width: 8),
         Text(
           title,
@@ -301,20 +500,20 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
     return Row(
       children: [
         Container(
-          width: 32,
-          height: 32,
+          width: 30,
+          height: 30,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: isActive ? AppTheme.woodPrimary : AppTheme.surface,
+            color: isActive ? AppTheme.woodPrimary : AppTheme.pastelCream,
             shape: BoxShape.circle,
-            border: Border.all(color: isActive ? AppTheme.woodLight : AppTheme.surfaceBorder),
+            border: Border.all(color: isActive ? AppTheme.woodPrimary : AppTheme.surfaceBorder),
           ),
           child: Text(
             number,
             style: TextStyle(
               color: isActive ? Colors.white : AppTheme.textMuted,
               fontWeight: FontWeight.w900,
-              fontSize: 13,
+              fontSize: 12,
             ),
           ),
         ),
@@ -322,7 +521,7 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
         Text(
           label,
           style: TextStyle(
-            color: isActive ? AppTheme.woodLight : AppTheme.textMuted,
+            color: isActive ? AppTheme.woodPrimary : AppTheme.textMuted,
             fontWeight: isActive ? FontWeight.w900 : FontWeight.w700,
             fontSize: 13,
           ),

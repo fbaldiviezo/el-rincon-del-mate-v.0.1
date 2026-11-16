@@ -67,6 +67,8 @@ model Client {
   ciNit     String?
   address   String
   city      String   @default("Santa Cruz")
+  latitude  Float?
+  longitude Float?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   orders    Order[]
@@ -114,6 +116,8 @@ model Order {
   paymentStatus String      @default("PENDING_VERIFICATION")
   address       String
   city          String      @default("Santa Cruz")
+  latitude      Float?
+  longitude     Float?
   phone         String
   notes         String?
   createdAt     DateTime    @default(now())

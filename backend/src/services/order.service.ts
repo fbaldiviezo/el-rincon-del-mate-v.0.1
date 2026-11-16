@@ -37,6 +37,8 @@ export interface CreateOrderInput {
   clientAddress: string;
   clientCity?: string;
   clientCiNit?: string;
+  latitude?: number | null;
+  longitude?: number | null;
   notes?: string;
   items: CreateOrderItemInput[];
 }
@@ -182,7 +184,9 @@ export class OrderService {
             phone: orderData.clientPhone.trim(),
             address: orderData.clientAddress.trim(),
             city: (orderData.clientCity || 'Santa Cruz').trim(),
-            ciNit: (orderData.clientCiNit || '').trim()
+            ciNit: (orderData.clientCiNit || '').trim(),
+            latitude: orderData.latitude ?? null,
+            longitude: orderData.longitude ?? null
           }
         });
       } else if (userId && client.userId === userId) {
@@ -194,7 +198,9 @@ export class OrderService {
             phone: orderData.clientPhone.trim() || client.phone,
             address: orderData.clientAddress.trim() || client.address,
             city: (orderData.clientCity || client.city).trim(),
-            ciNit: (orderData.clientCiNit || client.ciNit || '').trim()
+            ciNit: (orderData.clientCiNit || client.ciNit || '').trim(),
+            latitude: orderData.latitude !== undefined ? orderData.latitude : client.latitude,
+            longitude: orderData.longitude !== undefined ? orderData.longitude : client.longitude
           }
         });
       }
@@ -214,6 +220,8 @@ export class OrderService {
           paymentStatus: 'PENDING_VERIFICATION',
           address: orderData.clientAddress,
           city: orderData.clientCity || 'Santa Cruz',
+          latitude: orderData.latitude ?? null,
+          longitude: orderData.longitude ?? null,
           phone: orderData.clientPhone,
           notes: orderData.notes || '',
           items: {

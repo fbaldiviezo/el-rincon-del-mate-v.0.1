@@ -101,13 +101,14 @@ class CategoriesScreen extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
-                          color: AppTheme.woodPrimary.withValues(alpha: 0.15),
+                          color: AppTheme.pastelSage,
                           borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: AppTheme.woodLight.withValues(alpha: 0.3)),
                         ),
                         child: Text(
                           cat.productsCount > 0 ? '${cat.productsCount} PRODUCTOS' : 'COLECCIÓN',
                           style: const TextStyle(
-                            color: AppTheme.woodLight,
+                            color: AppTheme.woodDark,
                             fontSize: 10,
                             fontWeight: FontWeight.w800,
                             letterSpacing: 0.5,
@@ -146,11 +147,11 @@ class CategoriesScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w800,
-                          color: AppTheme.woodLight,
+                          color: AppTheme.woodPrimary,
                         ),
                       ),
                       SizedBox(width: 6),
-                      Icon(LucideIcons.arrowRight, size: 16, color: AppTheme.woodLight),
+                      Icon(LucideIcons.arrowRight, size: 16, color: AppTheme.woodPrimary),
                     ],
                   ),
                 ],
@@ -167,7 +168,7 @@ class CategoriesScreen extends StatelessWidget {
                 child: Image.network(
                   ApiConfig.resolveImageUrl(cat.imageUrl),
                   fit: BoxFit.contain,
-                  errorBuilder: (_, _, _) => const Icon(LucideIcons.package, size: 48, color: AppTheme.woodLight),
+                  errorBuilder: (_, _, _) => const Icon(LucideIcons.package, size: 48, color: AppTheme.woodPrimary),
                 ),
               ),
             ),

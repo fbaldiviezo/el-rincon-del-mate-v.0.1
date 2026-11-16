@@ -64,7 +64,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                         onChanged: (val) => _onSearchChanged(val, catalog),
                         decoration: InputDecoration(
                           hintText: 'Buscar por nombre, tipo o material...',
-                          prefixIcon: const Icon(LucideIcons.search, color: AppTheme.woodLight, size: 20),
+                          prefixIcon: const Icon(LucideIcons.search, color: AppTheme.woodPrimary, size: 20),
                           suffixIcon: _searchCtrl.text.isNotEmpty
                               ? IconButton(
                                   icon: const Icon(LucideIcons.x, color: AppTheme.textMuted, size: 18),
@@ -186,11 +186,11 @@ class _CatalogScreenState extends State<CatalogScreen> {
             width: 80,
             height: 80,
             decoration: BoxDecoration(
-              color: AppTheme.woodPrimary.withValues(alpha: 0.12),
+              color: AppTheme.pastelSage,
               borderRadius: BorderRadius.circular(24),
-              border: Border.all(color: AppTheme.woodPrimary.withValues(alpha: 0.25)),
+              border: Border.all(color: AppTheme.woodLight.withValues(alpha: 0.3)),
             ),
-            child: const Icon(LucideIcons.package, color: AppTheme.woodLight, size: 36),
+            child: const Icon(LucideIcons.package, color: AppTheme.woodPrimary, size: 36),
           ),
           const SizedBox(height: 20),
           const Text(
@@ -252,14 +252,14 @@ class _CatalogScreenState extends State<CatalogScreen> {
                   Container(
                     width: double.infinity,
                     decoration: const BoxDecoration(
-                      color: AppTheme.surface,
+                      color: AppTheme.pastelCream,
                       borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
                     ),
                     padding: const EdgeInsets.all(12),
                     child: Image.network(
                       ApiConfig.resolveImageUrl(product.imageUrl),
                       fit: BoxFit.contain,
-                      errorBuilder: (_, _, _) => const Icon(LucideIcons.package, color: AppTheme.woodLight, size: 36),
+                      errorBuilder: (_, _, _) => const Icon(LucideIcons.package, color: AppTheme.woodPrimary, size: 36),
                     ),
                   ),
                   Positioned(
@@ -268,13 +268,14 @@ class _CatalogScreenState extends State<CatalogScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Colors.black.withValues(alpha: 0.75),
+                        color: AppTheme.pastelSage,
                         borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: AppTheme.woodLight.withValues(alpha: 0.3)),
                       ),
                       child: Text(
                         Helpers.formatCurrency(product.price),
                         style: const TextStyle(
-                          color: AppTheme.woodLight,
+                          color: AppTheme.woodDark,
                           fontWeight: FontWeight.w900,
                           fontSize: 11,
                         ),
@@ -303,7 +304,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                             style: const TextStyle(
                               fontSize: 9,
                               fontWeight: FontWeight.w800,
-                              color: AppTheme.woodLight,
+                              color: AppTheme.woodPrimary,
                               letterSpacing: 0.5,
                             ),
                             maxLines: 1,

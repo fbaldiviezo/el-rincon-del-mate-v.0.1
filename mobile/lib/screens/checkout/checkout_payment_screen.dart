@@ -85,10 +85,10 @@ class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> {
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: AppTheme.surface,
+                    color: AppTheme.pastelSage,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(LucideIcons.camera, color: AppTheme.woodLight, size: 20),
+                  child: const Icon(LucideIcons.camera, color: AppTheme.woodPrimary, size: 20),
                 ),
                 title: const Text('Tomar Foto con la Cámara', style: TextStyle(color: AppTheme.textLight, fontWeight: FontWeight.w700)),
                 onTap: () {
@@ -102,10 +102,10 @@ class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> {
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: AppTheme.surface,
+                    color: AppTheme.pastelSage,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(LucideIcons.image, color: AppTheme.woodLight, size: 20),
+                  child: const Icon(LucideIcons.image, color: AppTheme.woodPrimary, size: 20),
                 ),
                 title: const Text('Seleccionar de la Galería', style: TextStyle(color: AppTheme.textLight, fontWeight: FontWeight.w700)),
                 onTap: () {
@@ -192,7 +192,7 @@ class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             _buildStepBadge(number: '✓', label: 'Datos', isCompleted: true, isActive: false),
-                            Container(width: 40, height: 2, color: AppTheme.woodLight),
+                            Container(width: 40, height: 2, color: AppTheme.woodPrimary),
                             _buildStepBadge(number: '2', label: 'Pago QR', isCompleted: false, isActive: true),
                           ],
                         ),
@@ -215,7 +215,7 @@ class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> {
                                 style: TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w800,
-                                  color: AppTheme.woodLight,
+                                  color: AppTheme.woodPrimary,
                                   letterSpacing: 0.8,
                                 ),
                               ),
@@ -252,7 +252,7 @@ class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> {
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(18),
-                                  border: Border.all(color: AppTheme.woodLight, width: 2),
+                                  border: Border.all(color: AppTheme.pastelSage, width: 2),
                                 ),
                                 child: catalog.activeQr != null && catalog.activeQr!.imageUrl.isNotEmpty
                                     ? Image.network(
@@ -270,7 +270,7 @@ class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> {
                               Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: const [
-                                  Icon(LucideIcons.qrCode, size: 16, color: AppTheme.woodLight),
+                                  Icon(LucideIcons.qrCode, size: 16, color: AppTheme.woodPrimary),
                                   SizedBox(width: 8),
                                   Text(
                                     'Código QR Bancario Oficial',
@@ -331,9 +331,9 @@ class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> {
                               width: double.infinity,
                               padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 20),
                               decoration: BoxDecoration(
-                                color: AppTheme.surface,
+                                color: AppTheme.pastelCream,
                                 borderRadius: BorderRadius.circular(20),
-                                border: Border.all(color: AppTheme.woodPrimary.withValues(alpha: 0.5), style: BorderStyle.solid),
+                                border: Border.all(color: AppTheme.surfaceBorder, style: BorderStyle.solid),
                               ),
                               child: Column(
                                 children: [
@@ -341,10 +341,10 @@ class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> {
                                     width: 54,
                                     height: 54,
                                     decoration: BoxDecoration(
-                                      color: AppTheme.woodPrimary.withValues(alpha: 0.15),
+                                      color: AppTheme.pastelSage,
                                       shape: BoxShape.circle,
                                     ),
-                                    child: const Icon(LucideIcons.camera, color: AppTheme.woodLight, size: 26),
+                                    child: const Icon(LucideIcons.camera, color: AppTheme.woodPrimary, size: 26),
                                   ),
                                   const SizedBox(height: 12),
                                   const Text(
@@ -365,7 +365,7 @@ class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> {
                           Container(
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
-                              color: AppTheme.surface,
+                              color: AppTheme.pastelSage,
                               borderRadius: BorderRadius.circular(18),
                               border: Border.all(color: AppTheme.success.withValues(alpha: 0.5)),
                             ),
@@ -495,7 +495,7 @@ class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> {
                 ? AppTheme.success
                 : (isActive ? AppTheme.woodPrimary : AppTheme.surface),
             shape: BoxShape.circle,
-            border: Border.all(color: isCompleted ? AppTheme.success : AppTheme.woodLight),
+            border: Border.all(color: isCompleted ? AppTheme.success : (isActive ? AppTheme.woodPrimary : AppTheme.surfaceBorder)),
           ),
           child: Text(
             number,
@@ -510,7 +510,7 @@ class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> {
         Text(
           label,
           style: TextStyle(
-            color: isActive ? AppTheme.woodLight : (isCompleted ? AppTheme.textLight : AppTheme.textMuted),
+            color: isActive ? AppTheme.woodPrimary : (isCompleted ? AppTheme.textLight : AppTheme.textMuted),
             fontWeight: isActive ? FontWeight.w900 : FontWeight.w700,
             fontSize: 13,
           ),
@@ -529,13 +529,13 @@ class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> {
             width: 20,
             height: 20,
             alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: AppTheme.woodPrimary.withValues(alpha: 0.2),
+            decoration: const BoxDecoration(
+              color: AppTheme.pastelSage,
               shape: BoxShape.circle,
             ),
             child: Text(
               step,
-              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AppTheme.woodLight),
+              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AppTheme.woodDark),
             ),
           ),
           const SizedBox(width: 10),

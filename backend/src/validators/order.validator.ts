@@ -31,6 +31,8 @@ export const createOrderBodySchema = z.object({
     .trim(),
   clientCity: z.string().trim().optional().default('Santa Cruz'),
   clientCiNit: z.string().trim().optional().default(''),
+  latitude: z.coerce.number().optional().nullable(),
+  longitude: z.coerce.number().optional().nullable(),
   notes: z.string().trim().optional(),
   items: z
     .array(createOrderItemSchema, { required_error: 'Los ítems son obligatorios' })

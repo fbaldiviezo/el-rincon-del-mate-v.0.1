@@ -1,30 +1,44 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  // Paleta de Colores "El Rincón del Mate" (Dark Luxury Artesanal)
-  static const Color background = Color(0xFF0B100E);
-  static const Color surface = Color(0xFF141E1A);
-  static const Color surfaceCard = Color(0xFF1B2822);
-  static const Color surfaceBorder = Color(0xFF2C3E36);
+  // Paleta de Colores Minimalista con Predominancia de Blanco y Tonos Pasteles
+  static const Color background = Color(0xFFFAFAFA);
+  static const Color surface = Color(0xFFFFFFFF);
+  static const Color surfaceCard = Color(0xFFFFFFFF);
+  static const Color surfaceBorder = Color(0xFFE2E8F0);
 
-  static const Color woodPrimary = Color(0xFFC8963E);
-  static const Color woodLight = Color(0xFFDEB065);
-  static const Color woodDark = Color(0xFFA17228);
+  // Tonos Pasteles Artesanales
+  static const Color woodPrimary = Color(0xFF456F55); // Verde Mate Pastel Elegante
+  static const Color woodLight = Color(0xFF628E73);
+  static const Color woodDark = Color(0xFF2E4F3B);
 
-  static const Color textLight = Color(0xFFF7F4EB);
-  static const Color textMuted = Color(0xFFA3B0A7);
-  static const Color textSecondary = Color(0xFF819186);
+  // Pasteles de Acento y Fondos Suaves
+  static const Color pastelSage = Color(0xFFEBF4EE); // Verde mate pastel muy suave
+  static const Color pastelCream = Color(0xFFFAF6F0); // Crema pastel cálido
+  static const Color pastelSand = Color(0xFFF3EDE3); // Arena pastel
+  static const Color pastelCaramel = Color(0xFFD4A373); // Caramelo cuero pastel
+  static const Color pastelCaramelSoft = Color(0xFFFDF7F0);
 
-  static const Color success = Color(0xFF10B981);
-  static const Color warning = Color(0xFFF59E0B);
-  static const Color danger = Color(0xFFEF4444);
+  // Textos para máxima legibilidad sobre blanco y pasteles
+  static const Color textLight = Color(0xFF0F172A); // Slate profundo de alta legibilidad
+  static const Color textMuted = Color(0xFF64748B);
+  static const Color textSecondary = Color(0xFF94A3B8);
 
-  static ThemeData get darkTheme {
+  // Estados
+  static const Color success = Color(0xFF16A34A);
+  static const Color successSoft = Color(0xFFDCFCE7);
+  static const Color warning = Color(0xFFD97706);
+  static const Color warningSoft = Color(0xFFFEF3C7);
+  static const Color danger = Color(0xFFDC2626);
+  static const Color dangerSoft = Color(0xFFFFE4E6);
+
+  static ThemeData get lightTheme {
     return ThemeData(
-      brightness: Brightness.dark,
+      useMaterial3: true,
+      brightness: Brightness.light,
       scaffoldBackgroundColor: background,
       primaryColor: woodPrimary,
-      colorScheme: const ColorScheme.dark(
+      colorScheme: const ColorScheme.light(
         primary: woodPrimary,
         secondary: woodLight,
         surface: surface,
@@ -35,16 +49,17 @@ class AppTheme {
         onError: Colors.white,
       ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: background,
+        backgroundColor: surface,
         elevation: 0,
         centerTitle: true,
-        scrolledUnderElevation: 2,
-        iconTheme: IconThemeData(color: woodLight),
+        scrolledUnderElevation: 1,
+        surfaceTintColor: Colors.transparent,
+        iconTheme: IconThemeData(color: textLight),
         titleTextStyle: TextStyle(
           color: textLight,
           fontSize: 18,
           fontWeight: FontWeight.w800,
-          letterSpacing: 0.5,
+          letterSpacing: 0.3,
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -58,16 +73,16 @@ class AppTheme {
           textStyle: const TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w800,
-            letterSpacing: 0.3,
+            letterSpacing: 0.2,
           ),
-          elevation: 3,
+          elevation: 0,
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: woodLight,
+          foregroundColor: woodPrimary,
           minimumSize: const Size(48, 48), // Regla UX: Mínimo 48x48
-          side: const BorderSide(color: woodPrimary, width: 1.5),
+          side: const BorderSide(color: surfaceBorder, width: 1.5),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -79,7 +94,7 @@ class AppTheme {
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: woodLight,
+          foregroundColor: woodPrimary,
           minimumSize: const Size(48, 48), // Regla UX: Mínimo 48x48
           textStyle: const TextStyle(
             fontSize: 14,
@@ -101,7 +116,7 @@ class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: woodPrimary, width: 2),
+          borderSide: const BorderSide(color: woodPrimary, width: 1.8),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
@@ -112,21 +127,23 @@ class AppTheme {
       ),
       cardTheme: CardThemeData(
         color: surfaceCard,
-        elevation: 2,
+        elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: const BorderSide(color: surfaceBorder, width: 1),
         ),
       ),
       snackBarTheme: SnackBarThemeData(
-        backgroundColor: surfaceCard,
-        contentTextStyle: const TextStyle(color: textLight, fontSize: 14),
+        backgroundColor: textLight,
+        contentTextStyle: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14),
-          side: const BorderSide(color: surfaceBorder),
         ),
         behavior: SnackBarBehavior.floating,
       ),
     );
   }
+
+  // Alias para mantener compatibilidad
+  static ThemeData get darkTheme => lightTheme;
 }

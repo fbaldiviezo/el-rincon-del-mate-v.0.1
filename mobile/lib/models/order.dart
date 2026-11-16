@@ -75,6 +75,8 @@ class Order {
   final String paymentStatus; // 'PENDING_VERIFICATION' | 'APPROVED' | 'REJECTED'
   final String address;
   final String city;
+  final double? latitude;
+  final double? longitude;
   final String phone;
   final String? notes;
   final DateTime createdAt;
@@ -91,6 +93,8 @@ class Order {
     required this.paymentStatus,
     required this.address,
     required this.city,
+    this.latitude,
+    this.longitude,
     required this.phone,
     this.notes,
     required this.createdAt,
@@ -115,6 +119,8 @@ class Order {
       paymentStatus: json['paymentStatus'] ?? (json['payment'] != null ? json['payment']['status'] ?? 'PENDING_VERIFICATION' : 'PENDING_VERIFICATION'),
       address: json['address'] ?? '',
       city: json['city'] ?? '',
+      latitude: json['latitude'] != null ? double.tryParse(json['latitude'].toString()) : null,
+      longitude: json['longitude'] != null ? double.tryParse(json['longitude'].toString()) : null,
       phone: json['phone'] ?? '',
       notes: json['notes'],
       createdAt: json['createdAt'] != null ? DateTime.tryParse(json['createdAt']) ?? DateTime.now() : DateTime.now(),

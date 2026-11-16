@@ -115,7 +115,7 @@ class CartScreen extends StatelessWidget {
                           ),
                           Text(
                             Helpers.formatCurrency(cart.totalPrice),
-                            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: AppTheme.woodLight),
+                            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: AppTheme.woodPrimary),
                           ),
                         ],
                       ),
@@ -162,14 +162,14 @@ class CartScreen extends StatelessWidget {
             height: 72,
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: AppTheme.surface,
+              color: AppTheme.pastelCream,
               borderRadius: BorderRadius.circular(14),
               border: Border.all(color: AppTheme.surfaceBorder),
             ),
             child: Image.network(
               ApiConfig.resolveImageUrl(item.product.imageUrl),
               fit: BoxFit.contain,
-              errorBuilder: (_, _, _) => const Icon(LucideIcons.package, color: AppTheme.woodLight, size: 28),
+              errorBuilder: (_, _, _) => const Icon(LucideIcons.package, color: AppTheme.woodPrimary, size: 28),
             ),
           ),
           const SizedBox(width: 14),
@@ -195,7 +195,7 @@ class CartScreen extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
-                    color: AppTheme.woodLight,
+                    color: AppTheme.woodPrimary,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -212,7 +212,7 @@ class CartScreen extends StatelessWidget {
                       child: Row(
                         children: [
                           IconButton(
-                            icon: const Icon(LucideIcons.minus, size: 14, color: AppTheme.woodLight),
+                            icon: const Icon(LucideIcons.minus, size: 14, color: AppTheme.woodPrimary),
                             constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
                             onPressed: () {
                               if (item.quantity > 1) {
@@ -232,7 +232,7 @@ class CartScreen extends StatelessWidget {
                             ),
                           ),
                           IconButton(
-                            icon: const Icon(LucideIcons.plus, size: 14, color: AppTheme.woodLight),
+                            icon: const Icon(LucideIcons.plus, size: 14, color: AppTheme.woodPrimary),
                             constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
                             onPressed: () {
                               if (item.quantity < item.product.stock) {
@@ -282,11 +282,11 @@ class CartScreen extends StatelessWidget {
               width: 90,
               height: 90,
               decoration: BoxDecoration(
-                color: AppTheme.woodPrimary.withValues(alpha: 0.12),
+                color: AppTheme.pastelSage,
                 shape: BoxShape.circle,
-                border: Border.all(color: AppTheme.woodPrimary.withValues(alpha: 0.25)),
+                border: Border.all(color: AppTheme.woodLight.withValues(alpha: 0.3)),
               ),
-              child: const Icon(LucideIcons.shoppingBag, color: AppTheme.woodLight, size: 44),
+              child: const Icon(LucideIcons.shoppingBag, color: AppTheme.woodPrimary, size: 44),
             ),
             const SizedBox(height: 24),
             const Text(
